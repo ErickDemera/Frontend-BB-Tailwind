@@ -1,5 +1,9 @@
+import { ReactNode } from "react";
 import { Header } from "./navbar";
-export const Layout = ({ children }) => {
+interface LayoutProps {
+  children: ReactNode;
+}
+export const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Header />
