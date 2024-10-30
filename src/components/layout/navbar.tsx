@@ -14,9 +14,10 @@ export const Header: React.FC = () => {
     console.log("Cerrando sesión...");
   };
 
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showAdminMenu, setShowAdminMenu] = useState(false);
   const [showCatalogoSubMenu, setShowCatalogoSubMenu] = useState(false);
   const [showConfiguracionSubMenu, setShowConfiguracionSubMenu] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <header>
@@ -65,81 +66,79 @@ export const Header: React.FC = () => {
           {/* Administración Dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setShowCatalogoSubMenu(true)}
-            onMouseLeave={() => setShowCatalogoSubMenu(false)}
+            onMouseEnter={() => setShowAdminMenu(true)}
+            onMouseLeave={() => {
+              setShowAdminMenu(false);
+              setShowCatalogoSubMenu(false);
+              setShowConfiguracionSubMenu(false);
+            }}
           >
             <button className="text-black font-bold">Administración</button>
-            <div
-              className={`absolute left-0 mt-2 bg-white shadow-md rounded-lg ${
-                showCatalogoSubMenu ? "block" : "hidden"
-              }`}
-            >
-              <div className="relative">
-                <button
-                  className="flex items-center px-4 py-2 text-black hover:bg-gray-100"
-                  onMouseEnter={() => setShowCatalogoSubMenu(true)}
-                >
-                  <FcBarChart className="mr-2" />
-                  Catálogo
-                </button>
+            {showAdminMenu && (
+              <div className="absolute left-0 mt-2 bg-white shadow-md rounded-lg w-40">
                 <div
-                  className={`absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg ${
-                    showCatalogoSubMenu ? "block" : "hidden"
-                  }`}
+                  className="relative"
                   onMouseEnter={() => setShowCatalogoSubMenu(true)}
                   onMouseLeave={() => setShowCatalogoSubMenu(false)}
                 >
-                  <Link href="/simulador/productos" className="block px-4 py-2 text-black hover:bg-gray-100">
-                    <FcCheckmark className="mr-2" />
-                    Productos
-                  </Link>
-                  <Link href="/simulador/segmentos" className="block px-4 py-2 text-black hover:bg-gray-100">
-                    <FcCheckmark className="mr-2" />
-                    Segmento
-                  </Link>
-                  <Link href="/simulador/plazo" className="block px-4 py-2 text-black hover:bg-gray-100">
-                    <FcCheckmark className="mr-2" />
-                    Plazo
-                  </Link>
+                  <button className="flex items-center px-4 py-2 text-black hover:bg-gray-100 w-full">
+                    <FcBarChart className="mr-2" />
+                    Catálogo
+                  </button>
+                  {showCatalogoSubMenu && (
+                    <div className="absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg">
+                      <Link href="/simulador/productos" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Productos
+                      </Link>
+                      <Link href="/simulador/segmentos" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Segmento
+                      </Link>
+                      <Link href="/simulador/plazo" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Plazo
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  className="relative"
+                  onMouseEnter={() => setShowConfiguracionSubMenu(true)}
+                  onMouseLeave={() => setShowConfiguracionSubMenu(false)}
+                >
+                  <button className="flex items-center px-4 py-2 text-black hover:bg-gray-100 w-full">
+                    <FcSupport className="mr-2" />
+                    Configuración
+                  </button>
+                  {showConfiguracionSubMenu && (
+                    <div className="absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg">
+                      <Link href="/configuracion/tasa" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Tasa
+                      </Link>
+                      <Link href="/configuracion/pit" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Pit
+                      </Link>
+                      <Link href="/configuracion/provision" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Provisión
+                      </Link>
+                      <Link href="/configuracion/ingreso" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Ingreso
+                      </Link>
+                      <Link href="/configuracion/costo" className="block px-4 py-2 text-black hover:bg-gray-100">
+                        <FcCheckmark className="mr-2" />
+                        Costo
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
-
-              {/* Configuración con submenú */}
-              <div
-                className="relative"
-                onMouseEnter={() => setShowConfiguracionSubMenu(true)}
-                onMouseLeave={() => setShowConfiguracionSubMenu(false)}
-              >
-                <button className="flex items-center px-4 py-2 text-black hover:bg-gray-100">
-                  <FcSupport className="mr-2" />
-                  Configuración
-                </button>
-                {showConfiguracionSubMenu && (
-                  <div className="absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg">
-                    <Link href="/configuracion/tasa" className="block px-4 py-2 text-black hover:bg-gray-100">
-                      <FcCheckmark className="mr-2" />
-                      Tasa
-                    </Link>
-                    <Link href="/configuracion/pit" className="block px-4 py-2 text-black hover:bg-gray-100">
-                      <FcCheckmark className="mr-2" />
-                      Pit
-                    </Link>
-                    <Link href="/configuracion/provision" className="block px-4 py-2 text-black hover:bg-gray-100">
-                      <FcCheckmark className="mr-2" />
-                      Provisión
-                    </Link>
-                    <Link href="/configuracion/ingreso" className="block px-4 py-2 text-black hover:bg-gray-100">
-                      <FcCheckmark className="mr-2" />
-                      Ingreso
-                    </Link>
-                    <Link href="/configuracion/costo" className="block px-4 py-2 text-black hover:bg-gray-100">
-                      <FcCheckmark className="mr-2" />
-                      Costo
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Simulador Button */}
