@@ -69,6 +69,8 @@ export const ListaTerms = () => {
   };
 
   return (
+
+    
     <div className="container mx-auto p-4 bg-gray-200">
       <div className="flex justify-between mb-4">
         <div>

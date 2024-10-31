@@ -5,7 +5,7 @@ import { ListaProductos } from "../../../components/simulador/productos/ListaPro
 export default function Home() {
   return (
     <Layout>
-      <FormProducto />
+      <FormProducto/>
     </Layout>
   );
 }

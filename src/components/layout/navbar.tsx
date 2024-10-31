@@ -1,5 +1,5 @@
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import React, { useState } from "react";
 import {
   FcBarChart,
   FcCheckmark,
@@ -10,18 +10,38 @@ import {
 } from "react-icons/fc";
 
 export const Header: React.FC = () => {
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showAdminMenu, setShowAdminMenu] = useState(false);
+  const [showCatalogoSubMenu, setShowCatalogoSubMenu] = useState(false);
+  const [showConfiguracionSubMenu, setShowConfiguracionSubMenu] =
+    useState(false);
+
+  const adminMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        adminMenuRef.current &&
+        !adminMenuRef.current.contains(event.target as Node)
+      ) {
+        setShowAdminMenu(false);
+        setShowCatalogoSubMenu(false);
+        setShowConfiguracionSubMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleLogout = () => {
     console.log("Cerrando sesión...");
   };
 
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showAdminMenu, setShowAdminMenu] = useState(false);
-  const [showCatalogoSubMenu, setShowCatalogoSubMenu] = useState(false);
-  const [showConfiguracionSubMenu, setShowConfiguracionSubMenu] = useState(false);
-
   return (
     <header>
-      {/* Barra superior */}
       <nav className="bg-[#229fa5] p-2">
         <div className="container mx-auto flex items-center justify-between">
           <Link href="#home">
@@ -58,44 +78,56 @@ export const Header: React.FC = () => {
 
       {/* Barra de navegación principal */}
       <nav className="bg-[#D3E9ED] p-2">
-        <div className="container mx-auto flex space-x-4">
-          <div className="relative">
+        <div className="container mx-auto flex justify-start space-x-4">
+          <div className="flex justify-center items-center">
             <button className="text-black font-bold">Seguridad</button>
           </div>
 
           {/* Administración Dropdown */}
           <div
-            className="relative"
-            onMouseEnter={() => setShowAdminMenu(true)}
-            onMouseLeave={() => {
-              setShowAdminMenu(false);
-              setShowCatalogoSubMenu(false);
-              setShowConfiguracionSubMenu(false);
-            }}
+            className="relative flex justify-center items-center"
+            ref={adminMenuRef}
           >
-            <button className="text-black font-bold">Administración</button>
+            <button
+              className="text-black font-bold"
+              onClick={() => setShowAdminMenu((prev) => !prev)}
+            >
+              Administración
+            </button>
             {showAdminMenu && (
-              <div className="absolute left-0 mt-2 bg-white shadow-md rounded-lg w-40">
-                <div
-                  className="relative"
-                  onMouseEnter={() => setShowCatalogoSubMenu(true)}
-                  onMouseLeave={() => setShowCatalogoSubMenu(false)}
-                >
-                  <button className="flex items-center px-4 py-2 text-black hover:bg-gray-100 w-full">
+              <div className="absolute top-full mt-2 bg-white shadow-md rounded-lg w-40 z-20">
+                {/* Submenú Catálogo */}
+                <div className="relative">
+                  <button
+                    className="flex items-center px-4 py-2 text-black hover:bg-gray-100 w-full"
+                    onClick={() => {
+                      setShowCatalogoSubMenu((prev) => !prev);
+                      setShowConfiguracionSubMenu(false); // Cierra el submenú de Configuración
+                    }}
+                  >
                     <FcBarChart className="mr-2" />
                     Catálogo
                   </button>
                   {showCatalogoSubMenu && (
-                    <div className="absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg">
-                      <Link href="/simulador/productos" className="block px-4 py-2 text-black hover:bg-gray-100">
+                    <div className="absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg w-40 z-30">
+                      <Link
+                        href="/simulador/productos"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Productos
                       </Link>
-                      <Link href="/simulador/segmentos" className="block px-4 py-2 text-black hover:bg-gray-100">
+                      <Link
+                        href="/simulador/segmentos"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Segmento
                       </Link>
-                      <Link href="/simulador/plazo" className="block px-4 py-2 text-black hover:bg-gray-100">
+                      <Link
+                        href="/simulador/plazo"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Plazo
                       </Link>
@@ -103,34 +135,52 @@ export const Header: React.FC = () => {
                   )}
                 </div>
 
-                <div
-                  className="relative"
-                  onMouseEnter={() => setShowConfiguracionSubMenu(true)}
-                  onMouseLeave={() => setShowConfiguracionSubMenu(false)}
-                >
-                  <button className="flex items-center px-4 py-2 text-black hover:bg-gray-100 w-full">
+                {/* Submenú Configuración */}
+                <div className="relative">
+                  <button
+                    className="flex items-center px-4 py-2 text-black hover:bg-gray-100 w-full"
+                    onClick={() => {
+                      setShowConfiguracionSubMenu((prev) => !prev);
+                      setShowCatalogoSubMenu(false); // Cierra el submenú de Catálogo
+                    }}
+                  >
                     <FcSupport className="mr-2" />
                     Configuración
                   </button>
                   {showConfiguracionSubMenu && (
-                    <div className="absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg">
-                      <Link href="/configuracion/tasa" className="block px-4 py-2 text-black hover:bg-gray-100">
+                    <div className="absolute left-full top-0 mt-0 bg-white shadow-md rounded-lg w-40 z-30">
+                      <Link
+                        href="/configuracion/tasa"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Tasa
                       </Link>
-                      <Link href="/configuracion/pit" className="block px-4 py-2 text-black hover:bg-gray-100">
+                      <Link
+                        href="/configuracion/pit"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Pit
                       </Link>
-                      <Link href="/configuracion/provision" className="block px-4 py-2 text-black hover:bg-gray-100">
+                      <Link
+                        href="/configuracion/provision"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Provisión
                       </Link>
-                      <Link href="/configuracion/ingreso" className="block px-4 py-2 text-black hover:bg-gray-100">
+                      <Link
+                        href="/configuracion/ingreso"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Ingreso
                       </Link>
-                      <Link href="/configuracion/costo" className="block px-4 py-2 text-black hover:bg-gray-100">
+                      <Link
+                        href="/configuracion/costo"
+                        className="block px-4 py-2 text-black hover:bg-gray-100"
+                      >
                         <FcCheckmark className="mr-2" />
                         Costo
                       </Link>
