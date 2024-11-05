@@ -17,6 +17,7 @@ export const Header: React.FC = () => {
     useState(false);
 
   const adminMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null); // Añadir ref para el menú de usuario
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -27,6 +28,12 @@ export const Header: React.FC = () => {
         setShowAdminMenu(false);
         setShowCatalogoSubMenu(false);
         setShowConfiguracionSubMenu(false);
+      }
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setShowUserMenu(false); // Cierra el menú de usuario
       }
     };
 
@@ -47,7 +54,9 @@ export const Header: React.FC = () => {
           <Link href="#home">
             <img src="/logo-bb.png" alt="Logo" className="h-10" />
           </Link>
-          <div className="relative">
+          <div className="relative" ref={userMenuRef}>
+            {" "}
+            {/* Usar el ref aquí */}
             <button
               onClick={() => setShowUserMenu((prev) => !prev)}
               className="flex items-center text-white focus:outline-none"
