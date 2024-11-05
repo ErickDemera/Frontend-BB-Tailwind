@@ -33,7 +33,7 @@ export const Header: React.FC = () => {
         userMenuRef.current &&
         !userMenuRef.current.contains(event.target as Node)
       ) {
-        setShowUserMenu(false); // Cierra el menú de usuario
+        setShowUserMenu(false); // Arreglo la opcion de cierre el menú de usuario
       }
     };
 
