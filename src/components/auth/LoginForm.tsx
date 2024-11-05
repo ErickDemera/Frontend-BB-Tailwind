@@ -4,8 +4,10 @@ import { useRouter } from "next/router";
 export const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [password, setPassword] = 
+  
+  
+  useState("");
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Email:", email);
