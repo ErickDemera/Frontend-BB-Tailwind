@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout";
+import { ListaProductos } from "@/components/simulador/productos/ListaProductos";
 import React, { useState } from "react";
-import ListaProductos from "../../components/simulador/productos/ListaProductos";
+
 
 export default function Index() {
   return (

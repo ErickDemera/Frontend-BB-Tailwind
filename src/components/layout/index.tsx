@@ -8,7 +8,8 @@ export const Layout = ({ children }: LayoutProps) => {
     <>
       <Header />
       {children}
-      <footer></footer>
+      <footer>
+      </footer>
     </>
   );
 };
